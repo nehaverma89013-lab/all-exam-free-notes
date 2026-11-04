@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ExamSeva – India's Free Exam Resource Portal</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #1a56db;
+      --primary-dark: #1e429f;
+      --accent: #f97316;
+      --bg: #f1f5f9;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --dark: #0f172a;
+    }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* NAV */
+    nav { background: var(--dark); color: white; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; height: 64px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; }
+    .nav-logo .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .nav-logo span.orange { color: var(--accent); }
+    .nav-links { display: flex; gap: 6px; align-items: center; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-size: 14px; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
+    .nav-links a:hover { color: white; background: rgba(255,255,255,0.08); }
+    .nav-cta { background: var(--primary) !important; color: white !important; font-weight: 600; }
+    .nav-cta:hover { background: var(--primary-dark) !important; }
+
+    /* HERO */
+    .hero { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%); color: white; padding: 70px 32px 60px; text-align: center; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.3); color: #fb923c; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(28px, 5vw, 52px); font-weight: 800; line-height: 1.1; margin-bottom: 16px; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { font-size: 17px; color: #94a3b8; max-width: 600px; margin: 0 auto 36px; line-height: 1.7; }
+    .hero-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: var(--primary); color: white; padding: 14px 28px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: white; padding: 14px 28px; border: 2px solid rgba(255,255,255,0.2); border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.5); }
+
+    /* STATS */
+    .stats-bar { background: white; border-bottom: 1px solid var(--border); display: flex; justify-content: center; flex-wrap: wrap; }
+    .stat-item { padding: 18px 36px; text-align: center; border-right: 1px solid var(--border); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-size: 24px; font-weight: 800; color: var(--primary); }
+    .stat-label { font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+
+    /* SEARCH */
+    .search-section { padding: 32px; max-width: 760px; margin: 0 auto; width: 100%; }
+    .search-box { display: flex; background: white; border: 2px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: border-color 0.2s; }
+    .search-box:focus-within { border-color: var(--primary); }
+    .search-box input { flex: 1; border: none; outline: none; padding: 16px 20px; font-size: 15px; color: var(--text); background: transparent; }
+    .search-box select { border: none; border-left: 1px solid var(--border); outline: none; padding: 0 16px; font-size: 14px; color: var(--muted); background: #f8fafc; cursor: pointer; }
+    .search-box button { background: var(--primary); color: white; border: none; padding: 0 24px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .search-box button:hover { background: var(--primary-dark); }
+
+    /* MAIN */
+    main { max-width: 1200px; margin: 0 auto; padding: 0 24px 60px; width: 100%; }
+
+    /* SECTION HEADER */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; margin-top: 36px; }
+    .section-title { font-size: 20px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .section-title::before { content: ''; display: block; width: 4px; height: 22px; background: var(--primary); border-radius: 2px; }
+    .see-all { font-size: 14px; color: var(--primary); text-decoration: none; font-weight: 600; cursor: pointer; }
+
+    /* EXAM CARDS */
+    .exam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; }
+    .exam-card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.2s; text-decoration: none; color: var(--text); }
+    .exam-card:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(26,86,219,0.12); transform: translateY(-2px); }
+    .exam-card.active { border-color: var(--primary); background: #eff6ff; }
+    .exam-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+    .exam-name { font-size: 13px; font-weight: 700; }
+    .exam-count { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    /* FILTER TABS */
+    .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 24px 0 20px; }
+    .filter-tab { padding: 8px 16px; border-radius: 100px; border: 1px solid var(--border); background: white; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; transition: all 0.2s; }
+    .filter-tab:hover, .filter-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    /* RESOURCE CARDS */
+    .resource-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+    .resource-card { background: white; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: all 0.2s; }
+    .resource-card:hover { border-color: var(--primary); box-shadow: 0 6px 24px rgba(26,86,219,0.1); transform: translateY(-2px); }
+    .card-top { padding: 20px 20px 14px; display: flex; align-items: flex-start; gap: 12px; }
+    .card-thumb { width: 48px; height: 56px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .card-thumb.book { background: #eff6ff; }
+    .card-thumb.paper { background: #fef3c7; }
+    .card-thumb.notes { background: #f0fdf4; }
+    .card-info { flex: 1; min-width: 0; }
+    .card-exam-tag { font-size: 11px; font-weight: 700; color: var(--primary); background: #eff6ff; padding: 2px 8px; border-radius: 100px; display: inline-block; margin-bottom: 6px; text-transform: uppercase; }
+    .card-title { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-meta { display: flex; gap: 10px; flex-wrap: wrap; padding: 0 20px 14px; }
+    .meta-tag { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+    .card-footer { border-top: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .free-badge { background: #dcfce7; color: var(--success); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 100px; white-space: nowrap; }
+
+    /* ACTION BUTTONS */
+    .card-actions { display: flex; gap: 6px; }
+    .btn-open { background: #eff6ff; color: var(--primary); border: 1px solid #bfdbfe; padding: 7px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s; white-space: nowrap; }
+    .btn-open:hover { background: #dbeafe; }
+    .btn-download { background: var(--primary); color: white; border: none; padding: 7px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background 0.2s; white-space: nowrap; }
+    .btn-download:hover { background: var(--primary-dark); }
+    .btn-no-file { background: #f1f5f9; color: var(--muted); border: 1px solid var(--border); padding: 7px 12px; border-radius: 8px; font-size: 12px; cursor: default; white-space: nowrap; }
+
+    /* VIEW MODAL */
+    .view-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 998; align-items: center; justify-content: center; padding: 20px; }
+    .view-modal-overlay.open { display: flex; }
+    .view-modal { background: white; border-radius: 16px; width: 100%; max-width: 900px; height: 85vh; display: flex; flex-direction: column; overflow: hidden; animation: modalIn 0.2s ease; }
+    .view-modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--dark); color: white; }
+    .view-modal-title { font-size: 15px; font-weight: 700; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .view-modal-actions { display: flex; gap: 8px; align-items: center; }
+    .view-dl-btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+    .view-close-btn { background: rgba(255,255,255,0.1); color: white; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+    .view-close-btn:hover { background: rgba(255,255,255,0.2); }
+    .view-frame-wrap { flex: 1; overflow: hidden; background: #374151; display: flex; align-items: center; justify-content: center; }
+    .view-frame-wrap iframe { width: 100%; height: 100%; border: none; }
+    .view-no-preview { text-align: center; padding: 60px 20px; color: white; }
+    .view-no-preview .big-icon { font-size: 64px; margin-bottom: 16px; }
+    .view-no-preview h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .view-no-preview p { color: #9ca3af; margin-bottom: 24px; }
+
+    /* UPLOAD MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 999; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: white; border-radius: 20px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; animation: modalIn 0.25s ease; }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .modal-header { padding: 24px 24px 0; display: flex; align-items: center; justify-content: space-between; }
+    .modal-title { font-size: 20px; font-weight: 800; }
+    .modal-close { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: white; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; color: var(--muted); transition: all 0.2s; }
+    .modal-close:hover { background: #fee2e2; color: #dc2626; }
+    .modal-body { padding: 20px 24px 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .form-label span { color: #ef4444; }
+    .form-input, .form-select, .form-textarea { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 14px; color: var(--text); outline: none; transition: border-color 0.2s; font-family: inherit; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,86,219,0.1); }
+    .form-textarea { resize: vertical; min-height: 80px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 32px; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: var(--primary); background: #eff6ff; }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .upload-zone-icon { font-size: 36px; margin-bottom: 10px; }
+    .upload-zone-text { font-size: 14px; color: var(--muted); }
+    .upload-zone-text strong { color: var(--primary); }
+    .upload-zone-hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .file-preview { display: none; align-items: center; gap: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 10px 14px; margin-top: 10px; }
+    .file-preview.show { display: flex; }
+    .btn-submit { width: 100%; background: linear-gradient(135deg, var(--primary), #2563eb); color: white; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; }
+    .btn-submit:hover { opacity: 0.92; transform: translateY(-1px); }
+    .progress-bar-wrap { display: none; background: #e2e8f0; border-radius: 100px; height: 8px; margin-top: 12px; overflow: hidden; }
+    .progress-bar-wrap.show { display: block; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 100px; transition: width 0.3s; width: 0%; }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--dark); color: white; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; opacity: 0; transition: all 0.3s; z-index: 9999; white-space: nowrap; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* FOOTER */
+    footer { background: var(--dark); color: #94a3b8; margin-top: auto; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 48px 32px 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+    .footer-brand .logo { font-size: 20px; font-weight: 800; color: white; margin-bottom: 10px; }
+    .footer-brand p { font-size: 13px; line-height: 1.6; }
+    .footer-col h4 { font-size: 13px; font-weight: 700; color: white; margin-bottom: 14px; }
+    .footer-col a { display: block; font-size: 13px; color: #64748b; text-decoration: none; margin-bottom: 8px; transition: color 0.2s; }
+    .footer-col a:hover { color: white; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; text-align: center; font-size: 13px; }
+
+    /* EMPTY */
+    #emptyState { display: none; text-align: center; padding: 60px 20px; color: var(--muted); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      .hero { padding: 50px 16px 44px; }
+      main { padding: 0 16px 40px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .stat-item { padding: 14px 20px; }
+      .card-footer { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-icon">📚</div>
+    Exam<span class="orange">Seva</span>
+  </div>
+  <div class="nav-links">
+    <a href="#" class="active">Home</a>
+    <a href="#" onclick="setTypeFilter('book',this);return false;">Books</a>
+    <a href="#" onclick="setTypeFilter('paper',this);return false;">Papers</a>
+    <a href="#" onclick="setTypeFilter('notes',this);return false;">Notes</a>
+    <a href="#" onclick="openUploadModal();return false;" class="nav-cta">+ Upload</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🇮🇳 100% Free · No Login Required</div>
+  <h1>India's Largest Free<br><span>Exam Study Portal</span></h1>
+  <p>Download books, previous year papers, and notes for UPSC, SSC, JEE, NEET, Banking, State PSC, and 50+ more exams — completely free.</p>
+  <div class="hero-buttons">
+    <a href="#resources" class="btn-primary">📂 Browse Resources</a>
+    <a href="#" class="btn-outline" onclick="openUploadModal();return false;">⬆️ Upload Material</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num" id="totalDocs">1,240</div><div class="stat-label">Total Resources</div></div>
+  <div class="stat-item"><div class="stat-num">50+</div><div class="stat-label">Exams Covered</div></div>
+  <div class="stat-item"><div class="stat-num">48K+</div><div class="stat-label">Downloads</div></div>
+  <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Free Forever</div></div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search books, papers, notes..." oninput="filterResources()" />
+    <select id="typeFilter" onchange="filterResources()">
+      <option value="">All Types</option>
+      <option value="book">📘 Book</option>
+      <option value="paper">📄 Paper</option>
+      <option value="notes">📝 Notes</option>
+    </select>
+    <button onclick="filterResources()">🔍 Search</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+  <div class="section-header">
+    <div class="section-title">Exam Categories</div>
+    <a href="#" class="see-all">See all →</a>
+  </div>
+  <div class="exam-grid">
+    <a class="exam-card active" href="#" onclick="filterByExam('All',this);return false;"><span class="exam-icon">🗂️</span><div class="exam-name">All Exams</div><div class="exam-count">1240 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('UPSC',this);return false;"><span class="exam-icon">🏛️</span><div class="exam-name">UPSC CSE</div><div class="exam-count">340 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('SSC',this);return false;"><span class="exam-icon">📋</span><div class="exam-name">SSC CGL / CHSL</div><div class="exam-count">210 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('JEE',this);return false;"><span class="exam-icon">⚙️</span><div class="exam-name">JEE / IIT</div><div class="exam-count">185 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('NEET',this);return false;"><span class="exam-icon">🩺</span><div class="exam-name">NEET UG/PG</div><div class="exam-count">160 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('Banking',this);return false;"><span class="exam-icon">🏦</span><div class="exam-name">IBPS / Banking</div><div class="exam-count">145 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('Railway',this);return false;"><span class="exam-icon">🚆</span><div class="exam-name">Railway / RRB</div><div class="exam-count">98 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('State PSC',this);return false;"><span class="exam-icon">🗺️</span><div class="exam-name">State PSC</div><div class="exam-count">120 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('Defence',this);return false;"><span class="exam-icon">🎖️</span><div class="exam-name">NDA / CDS</div><div class="exam-count">72 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('GATE',this);return false;"><span class="exam-icon">🔬</span><div class="exam-name">GATE</div><div class="exam-count">88 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('Teaching',this);return false;"><span class="exam-icon">👨‍🏫</span><div class="exam-name">CTET / TET</div><div class="exam-count">65 files</div></a>
+    <a class="exam-card" href="#" onclick="filterByExam('Police',this);return false;"><span class="exam-icon">👮</span><div class="exam-name">Police / SI</div><div class="exam-count">54 files</div></a>
+  </div>
+
+  <div id="resources">
+    <div class="section-header">
+      <div class="section-title" id="resourcesTitle">All Resources</div>
+      <span class="see-all" onclick="openUploadModal()">⬆️ Upload New</span>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="setTypeFilter('',this)">All</button>
+      <button class="filter-tab" onclick="setTypeFilter('book',this)">📘 Books</button>
+      <button class="filter-tab" onclick="setTypeFilter('paper',this)">📄 Previous Papers</button>
+      <button class="filter-tab" onclick="setTypeFilter('notes',this)">📝 Notes</button>
+    </div>
+    <div class="resource-grid" id="resourceGrid"></div>
+    <div id="emptyState">
+      <div style="font-size:48px;margin-bottom:12px;">🔍</div>
+      <div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">No results found</div>
+      <p>Try different search or upload this material!</p>
+      <button class="btn-primary" style="margin:20px auto 0;display:inline-flex;" onclick="openUploadModal()">⬆️ Upload Material</button>
+    </div>
+  </div>
+</main>
+
+<!-- VIEW MODAL -->
+<div class="view-modal-overlay" id="viewModal" onclick="closeViewIfOutside(event)">
+  <div class="view-modal">
+    <div class="view-modal-header">
+      <div class="view-modal-title" id="viewTitle">Document</div>
+      <div class="view-modal-actions">
+        <button class="view-dl-btn" id="viewDlBtn" onclick="downloadFromView()">⬇️ Download</button>
+        <button class="view-close-btn" onclick="closeViewModal()">✕</button>
+      </div>
+    </div>
+    <div class="view-frame-wrap" id="viewFrameWrap"></div>
+  </div>
+</div>
+
+<!-- UPLOAD MODAL -->
+<div class="modal-overlay" id="uploadModal" onclick="closeIfOutside(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">⬆️ Upload Study Material</div>
+      <button class="modal-close" onclick="closeUploadModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Title <span>*</span></label>
+        <input class="form-input" id="upTitle" type="text" placeholder="e.g., UPSC Polity by Laxmikanth" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Exam <span>*</span></label>
+          <select class="form-select" id="upExam">
+            <option value="">Select Exam</option>
+            <option>UPSC</option><option>SSC</option><option>JEE</option><option>NEET</option>
+            <option>Banking</option><option>Railway</option><option>State PSC</option>
+            <option>Defence</option><option>GATE</option><option>Teaching</option>
+            <option>Police</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type <span>*</span></label>
+          <select class="form-select" id="upType">
+            <option value="">Select Type</option>
+            <option value="book">📘 Book</option>
+            <option value="paper">📄 Previous Year Paper</option>
+            <option value="notes">📝 Notes / Study Material</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input class="form-input" id="upSubject" type="text" placeholder="e.g., History, Maths" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Year (if paper)</label>
+          <input class="form-input" id="upYear" type="number" placeholder="e.g., 2023" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" id="upDesc" placeholder="Brief description..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Upload File <span>*</span></label>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt" onchange="handleFileSelect(this)" />
+          <div class="upload-zone-icon">📁</div>
+          <div class="upload-zone-text"><strong>Click to browse</strong> or drag & drop</div>
+          <div class="upload-zone-hint">PDF, DOC, DOCX, PPT, TXT · Max 50 MB</div>
+        </div>
+        <div class="file-preview" id="filePreview">
+          <span style="font-size:22px;">📄</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#166534;" id="fileName"></div>
+            <div style="font-size:12px;color:#16a34a;" id="fileSize"></div>
+          </div>
+          <button onclick="clearFile()" style="margin-left:auto;border:none;background:#fee2e2;color:#dc2626;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:12px;">Remove</button>
+        </div>
+        <div class="progress-bar-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+      <button class="btn-submit" id="uploadBtn" onclick="submitUpload()">🚀 Upload for Free</button>
+      <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:12px;">By uploading, you agree this material is free to share.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">📚 ExamSeva</div>
+        <p>India's most trusted free exam preparation portal. All study materials, books, and papers — 100% free, forever. Made with ❤️ for every Indian student.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Top Exams</h4>
+        <a href="#">UPSC CSE</a><a href="#">SSC CGL</a><a href="#">JEE Advanced</a><a href="#">NEET UG</a><a href="#">IBPS PO</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#">Books</a><a href="#">Previous Papers</a><a href="#">Notes</a><a href="#">Syllabus</a>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <a href="#">How to Upload</a><a href="#">Report Error</a><a href="#">Contact Us</a><a href="#">About ExamSeva</a>
+      </div>
+    </div>
+    <div class="footer-bottom">🇮🇳 ExamSeva 2024 · Free education for every Indian student · No ads, no paywall</div>
+  </div>
+</footer>
+
+<script>
+// ─── STORAGE KEY ───
+const DATA_KEY   = 'examSevaData_v3';
+const FILES_KEY  = 'examSevaFiles_v3';
+
+// ─── DEFAULT RESOURCES (no file — demo) ───
+const defaultResources = [
+  { id:1,  title:"NCERT History Class 12 – Full Book",          exam:"UPSC",    type:"book",  subject:"History",          year:"",   downloads:4821, size:"18 MB", fileKey:null },
+  { id:2,  title:"UPSC CSE Prelims 2023 – GS Paper I",          exam:"UPSC",    type:"paper", subject:"General Studies",   year:"2023", downloads:9340, size:"2.1 MB", fileKey:null },
+  { id:3,  title:"Laxmikanth Polity – Full Notes PDF",           exam:"UPSC",    type:"notes", subject:"Polity",            year:"",   downloads:7200, size:"12 MB", fileKey:null },
+  { id:4,  title:"SSC CGL Maths Chapterwise Questions",          exam:"SSC",     type:"book",  subject:"Mathematics",       year:"",   downloads:5100, size:"8 MB",  fileKey:null },
+  { id:5,  title:"SSC CHSL Previous Papers 2017–2023",           exam:"SSC",     type:"paper", subject:"General",           year:"2023", downloads:6800, size:"24 MB", fileKey:null },
+  { id:6,  title:"JEE Advanced 2023 – Full Paper with Solution", exam:"JEE",     type:"paper", subject:"Physics/Chem/Math", year:"2023", downloads:12400, size:"5.2 MB", fileKey:null },
+  { id:7,  title:"HC Verma – Concepts of Physics Vol 1",         exam:"JEE",     type:"book",  subject:"Physics",           year:"",   downloads:18000, size:"22 MB", fileKey:null },
+  { id:8,  title:"NEET Biology Chapterwise MCQs",                exam:"NEET",    type:"notes", subject:"Biology",           year:"",   downloads:9800, size:"14 MB", fileKey:null },
+  { id:9,  title:"IBPS PO Mains 2022 – Memory Based Paper",     exam:"Banking", type:"paper", subject:"General",           year:"2022", downloads:4300, size:"3.5 MB", fileKey:null },
+  { id:10, title:"RRB NTPC Previous 10 Year Papers",             exam:"Railway", type:"paper", subject:"General",           year:"2022", downloads:7700, size:"30 MB", fileKey:null },
+  { id:11, title:"GATE CSE 2023 – Complete Paper + Key",         exam:"GATE",    type:"paper", subject:"Computer Science",  year:"2023", downloads:5600, size:"4 MB",  fileKey:null },
+  { id:12, title:"CTET Paper 1 – Child Development Notes",       exam:"Teaching",type:"notes", subject:"CDP",               year:"",   downloads:3200, size:"6 MB",  fileKey:null },
+];
+
+let allResources = JSON.parse(localStorage.getItem(DATA_KEY) || 'null') || [...defaultResources];
+let activeExam = 'All';
+let activeType = '';
+
+// Current file being viewed
+let viewingFileData = null;
+let viewingFileName = '';
+let viewingFileType = '';
+
+function saveData() { localStorage.setItem(DATA_KEY, JSON.stringify(allResources)); }
+
+function getFileData(fileKey) {
+  if (!fileKey) return null;
+  try { return localStorage.getItem(FILES_KEY + '_' + fileKey); } catch { return null; }
+}
+function saveFileData(fileKey, dataUrl) {
+  try { localStorage.setItem(FILES_KEY + '_' + fileKey, dataUrl); return true; }
+  catch (e) { return false; }
+}
+
+// ─── RENDER CARDS ───
+function renderResources() {
+  const searchVal = document.getElementById('searchInput').value.toLowerCase();
+  const grid = document.getElementById('resourceGrid');
+  const empty = document.getElementById('emptyState');
+
+  let filtered = allResources.filter(r => {
+    const matchExam   = activeExam === 'All' || r.exam === activeExam;
+    const matchType   = !activeType || r.type === activeType;
+    const matchSearch = !searchVal ||
+      r.title.toLowerCase().includes(searchVal) ||
+      (r.subject||'').toLowerCase().includes(searchVal) ||
+      r.exam.toLowerCase().includes(searchVal);
+    return matchExam && matchType && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = filtered.map(r => {
+    const hasFile = !!r.fileKey;
+    const icon = r.type === 'book' ? '📘' : r.type === 'paper' ? '📄' : '📝';
+    const actionBtns = hasFile
+      ? `<div class="card-actions">
+           <button class="btn-open"     onclick="openFile(${r.id})">👁️ Open</button>
+           <button class="btn-download" onclick="downloadFile(${r.id})">⬇️ Download</button>
+         </div>`
+      : `<div class="card-actions">
+           <span class="btn-no-file">📌 Demo File</span>
+         </div>`;
+
+    return `
+      <div class="resource-card">
+        <div class="card-top">
+          <div class="card-thumb ${r.type}">${icon}</div>
+          <div class="card-info">
+            <div class="card-exam-tag">${r.exam}${r.year ? ' ' + r.year : ''}</div>
+            <div class="card-title">${r.title}</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <div class="meta-tag">📁 ${capitalize(r.type)}</div>
+          ${r.subject ? `<div class="meta-tag">📚 ${r.subject}</div>` : ''}
+          ${r.size ? `<div class="meta-tag">💾 ${r.size}</div>` : ''}
+          <div class="meta-tag">⬇️ ${Number(r.downloads).toLocaleString()}</div>
+        </div>
+        <div class="card-footer">
+          <span class="free-badge">✅ FREE</span>
+          ${actionBtns}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+// ─── OPEN FILE ───
+function openFile(id) {
+  const r = allResources.find(x => x.id === id);
+  if (!r || !r.fileKey) { showToast('⚠️ File not available for this demo resource.'); return; }
+  const dataUrl = getFileData(r.fileKey);
+  if (!dataUrl) { showToast('⚠️ File not found in storage.'); return; }
+
+  viewingFileData = dataUrl;
+  viewingFileName = r.title;
+  viewingFileType = dataUrl.split(';')[0].replace('data:','');
+
+  document.getElementById('viewTitle').textContent = r.title;
+  const wrap = document.getElementById('viewFrameWrap');
+
+  r.downloads++;
+  saveData();
+  renderResources();
+
+  if (viewingFileType === 'application/pdf') {
+    wrap.innerHTML = `<iframe src="${dataUrl}" title="${r.title}"></iframe>`;
+  } else if (viewingFileType.startsWith('text/') || viewingFileType === 'application/json') {
+    // decode text
+    const base64 = dataUrl.split(',')[1];
+    const text = atob(base64);
+    wrap.innerHTML = `<iframe srcdoc="${encodeURIComponent(text)}" style="width:100%;height:100%;border:none;background:white;"></iframe>`;
+  } else {
+    // Not previewable in browser — show download prompt
+    wrap.innerHTML = `
+      <div class="view-no-preview">
+        <div class="big-icon">📄</div>
+        <h3>${r.title}</h3>
+        <p>This file type (${viewingFileType}) cannot be previewed in browser.<br>Please download it to open.</p>
+        <button class="btn-primary" onclick="downloadFromView()">⬇️ Download File</button>
+      </div>`;
+  }
+
+  document.getElementById('viewModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// ─── DOWNLOAD FILE ───
+function downloadFile(id) {
+  const r = allResources.find(x => x.id === id);
+  if (!r || !r.fileKey) { showToast('⚠️ No file for this demo resource.'); return; }
+  const dataUrl = getFileData(r.fileKey);
+  if (!dataUrl) { showToast('⚠️ File not found in storage.'); return; }
+
+  r.downloads++;
+  saveData();
+
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = r.title + '.' + getExt(dataUrl);
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast('⬇️ Downloading: ' + r.title);
+  renderResources();
+}
+
+function downloadFromView() {
+  if (!viewingFileData) return;
+  const a = document.createElement('a');
+  a.href = viewingFileData;
+  a.download = viewingFileName + '.' + getExt(viewingFileData);
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast('⬇️ Download started!');
+}
+
+function getExt(dataUrl) {
+  const mime = dataUrl.split(';')[0].replace('data:','');
+  const map = { 'application/pdf':'pdf', 'application/msword':'doc',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document':'docx',
+    'application/vnd.ms-powerpoint':'ppt',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation':'pptx',
+    'text/plain':'txt' };
+  return map[mime] || 'bin';
+}
+
+// ─── VIEW MODAL ───
+function closeViewModal() {
+  document.getElementById('viewModal').classList.remove('open');
+  document.getElementById('viewFrameWrap').innerHTML = '';
+  document.body.style.overflow = '';
+  viewingFileData = null;
+}
+function closeViewIfOutside(e) { if (e.target === document.getElementById('viewModal')) closeViewModal(); }
+
+// ─── FILTERS ───
+function filterResources() { renderResources(); }
+
+function filterByExam(exam, el) {
+  activeExam = exam;
+  document.querySelectorAll('.exam-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('resourcesTitle').textContent = exam === 'All' ? 'All Resources' : exam + ' Resources';
+  document.getElementById('resources').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  renderResources();
+}
+
+function setTypeFilter(type, el) {
+  activeType = type;
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('typeFilter').value = type;
+  renderResources();
+}
+
+// ─── UPLOAD MODAL ───
+function openUploadModal() {
+  document.getElementById('uploadModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeUploadModal() {
+  document.getElementById('uploadModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeIfOutside(e) { if (e.target === document.getElementById('uploadModal')) closeUploadModal(); }
+
+// ─── FILE SELECT ───
+let selectedFile = null;
+function handleFileSelect(input) {
+  selectedFile = input.files[0];
+  if (!selectedFile) return;
+  document.getElementById('fileName').textContent = selectedFile.name;
+  document.getElementById('fileSize').textContent = formatSize(selectedFile.size);
+  document.getElementById('filePreview').classList.add('show');
+}
+function clearFile() {
+  document.getElementById('fileInput').value = '';
+  document.getElementById('filePreview').classList.remove('show');
+  document.getElementById('progressWrap').classList.remove('show');
+  document.getElementById('progressBar').style.width = '0%';
+  selectedFile = null;
+}
+function formatSize(bytes) {
+  if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/1024/1024).toFixed(1) + ' MB';
+}
+
+// ─── SUBMIT UPLOAD ───
+function submitUpload() {
+  const title = document.getElementById('upTitle').value.trim();
+  const exam  = document.getElementById('upExam').value;
+  const type  = document.getElementById('upType').value;
+
+  if (!title || !exam || !type || !selectedFile) {
+    showToast('⚠️ Please fill all required fields and select a file.');
+    return;
+  }
+
+  const btn = document.getElementById('uploadBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Uploading...';
+  document.getElementById('progressWrap').classList.add('show');
+
+  // Simulate progress
+  let prog = 0;
+  const interval = setInterval(() => {
+    prog = Math.min(prog + 10, 85);
+    document.getElementById('progressBar').style.width = prog + '%';
+  }, 100);
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    clearInterval(interval);
+    document.getElementById('progressBar').style.width = '100%';
+
+    const dataUrl = e.target.result;
+    const fileKey = 'file_' + Date.now();
+    const saved = saveFileData(fileKey, dataUrl);
+
+    const newResource = {
+      id:       Date.now(),
+      title,
+      exam,
+      type,
+      subject:  document.getElementById('upSubject').value.trim() || 'General',
+      year:     document.getElementById('upYear').value.trim(),
+      downloads: 0,
+      size:     formatSize(selectedFile.size),
+      fileKey:  saved ? fileKey : null,
+    };
+
+    allResources.unshift(newResource);
+    saveData();
+
+    setTimeout(() => {
+      closeUploadModal();
+      btn.disabled = false;
+      btn.textContent = '🚀 Upload for Free';
+      ['upTitle','upExam','upType','upSubject','upYear','upDesc'].forEach(id => document.getElementById(id).value = '');
+      clearFile();
+      activeExam = 'All';
+      activeType = '';
+      document.querySelectorAll('.exam-card').forEach((c,i) => c.classList.toggle('active', i===0));
+      document.querySelectorAll('.filter-tab').forEach((b,i) => b.classList.toggle('active', i===0));
+      renderResources();
+      showToast('🎉 Upload successful! Open & Download ready!');
+      document.getElementById('resources').scrollIntoView({ behavior: 'smooth' });
+    }, 400);
+  };
+
+  reader.onerror = function() {
+    clearInterval(interval);
+    btn.disabled = false;
+    btn.textContent = '🚀 Upload for Free';
+    showToast('❌ File read error. Please try again.');
+  };
+
+  reader.readAsDataURL(selectedFile);
+}
+
+// ─── TOAST ───
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ─── DRAG & DROP ───
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.classList.remove('drag-over');
+  const fi = document.getElementById('fileInput');
+  if (e.dataTransfer.files.length) {
+    Object.defineProperty(fi, 'files', { value: e.dataTransfer.files, writable: true });
+    selectedFile = e.dataTransfer.files[0];
+    document.getElementById('fileName').textContent = selectedFile.name;
+    document.getElementById('fileSize').textContent = formatSize(selectedFile.size);
+    document.getElementById('filePreview').classList.add('show');
+  }
+});
+
+// ─── INIT ───
+renderResources();
+</script>
+</body>
+</html>
